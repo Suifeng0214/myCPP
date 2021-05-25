@@ -7,13 +7,12 @@ using namespace std;
 #define lowbit(x) (x&-x)
 #define MP(x, y) make_pair(x, y)
 int a[4800000];
-int now, l, r;
 signed main() 
 { 
 //	freopen("in.txt", "w", stdout);
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
-	int n, k, cnt=0;
+	int n, k;
 	cin >> n >> k;
 	for (int i = 1; i <= n; i++){
 		cin >> a[i];
