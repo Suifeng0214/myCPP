@@ -9,8 +9,8 @@ using namespace std;
 priority_queue <int > pq;
 signed main() 
 { 
-//	freopen("in.txt", "r", stdin);
-//	freopen("ans.txt", "w", stdout);
+	freopen("in.txt", "r", stdin);
+	freopen("wans.txt", "w", stdout);
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
 	int q;
@@ -34,7 +34,7 @@ signed main()
 				pq.emplace(arr[i].S);
 				ans++;
 			}else{
-				if (!pq.empty() && pq.top() > arr[i].S){
+				if (!pq.empty() && now + arr[i].S - pq.top() <= arr[i].F){
 					now -= pq.top();
 					now += arr[i].S;
 					pq.pop();
