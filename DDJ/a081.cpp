@@ -9,47 +9,40 @@ using namespace std;
 #define mid ((l+r)/2)
 #define PII pair<int, int>
 
+vector <pair <int, int> > arr;
+priority_queue <int, vector<int>, greater<int> > pqg;
 signed main() 
 { 
-	//freopen("in.txt", "r", stdin);
+//	freopen("in.txt", "r", stdin);
 //	freopen("ans.txt", "w", stdout);
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
-	int n;
-	vector <pair <int, int> > arr;
-	priority_queue <int, vector<int>, greater<int> > pqg;
+	int n, l, r;
 	while(cin >> n){
 		arr.clear();
 		while(!pqg.empty()) pqg.pop();
-		int l, r;
 		for (int i = 0; i < n; i++){
 			cin >> l >> r;
 			arr.emplace_back(l, r);
 		}
 		sort(arr.begin(), arr.end());
 		int T = arr[0].F, ans = 0;
-		for (int i = 0; i < n;){
-			if (arr[i].F <= T){
+		for (int i = 0; i < n; i++){
+			if (arr[i].F <= T && T <= arr[i].S){
 				pqg.emplace(arr[i].S);
 			}
-			if (i==n-1 || arr[i+1].F != T){ //hit
+			if (i==n-1 || arr[i+1].F > T){ //hit
 				while (!pqg.empty() && T <= pqg.top()){
 					ans++;
 					pqg.pop();
 					T++;
+					while (!pqg.empty() && pqg.top() < T) pqg.pop();
+					if (i != n-1 && T == arr[i+1].F) break;
 				}
 			}
-			if (i==n-1 || T >= arr[i+1].F){
-				i++;
-				continue;
-			}
-			if (pqg.empty()){
-				i++;
-				T=arr[i].F;
-			}
+			//cout << "T=" << T << " i=" << i  << " " << arr[i].F << " " << arr[i+1].F << " "<< pqg.top() << endl;
+			if (pqg.empty() && i != n-1 && T < arr[i+1].F) T = arr[i+1].F;
 		}
 		cout << ans << "\n";
-	//	for (auto i : arr) cout << i.F << " " << i.S << "\n";
-	//	cout << "\n";
 	}
 }

@@ -13,13 +13,13 @@ signed main()
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
 	srand(clock());
-	int q = 10;
+	int q = 100;
 	while(q--){
-		int t = 10;
+		int t = 100;
 		cout << t << "\n";
 		for (int i = 0; i < t; i++){
-			int l = rand()%(11);
-			int r = rand()%(10-l+1)+l;
+			int l = rand()%(1001);
+			int r = rand()%(10+1)+l;
 			cout << l << " " << r << "\n";
 		}
 	}
