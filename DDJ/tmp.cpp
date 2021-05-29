@@ -6,42 +6,21 @@ using namespace std;
 #define S second
 #define lowbit(x) (x&-x)
 #define MP(x, y) make_pair(x, y)
-priority_queue <int > pq;
 signed main() 
 { 
-	freopen("in.txt", "r", stdin);
-	freopen("wans.txt", "w", stdout);
+//	freopen("in.txt", "r", stdin);
+	freopen("in.txt", "w", stdout);
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
-	int q;
-	cin >> q;
-	vector <pair<int, int> > arr;
+	srand(clock());
+	int q = 10;
 	while(q--){
-		while(!pq.empty())	pq.pop();
-		arr.clear();
-		int n;
-		cin >> n;
-		for (int i = 0; i < n; i++){
-			int t, d;
-			cin >> t >> d;
-			arr.emplace_back(d, t);
+		int t = 10;
+		cout << t << "\n";
+		for (int i = 0; i < t; i++){
+			int l = rand()%(11);
+			int r = rand()%(10-l+1)+l;
+			cout << l << " " << r << "\n";
 		}
-		sort(arr.begin(), arr.end());
-		int ans = 0, now = 0;
-		for (int i = 0; i < n; i++){
-			if (now + arr[i].S <= arr[i].F){
-				now += arr[i].S;
-				pq.emplace(arr[i].S);
-				ans++;
-			}else{
-				if (!pq.empty() && now + arr[i].S - pq.top() <= arr[i].F){
-					now -= pq.top();
-					now += arr[i].S;
-					pq.pop();
-					pq.emplace(arr[i].S);
-				}
-			}
-		}
-		cout << ans << "\n";
 	}
 }
