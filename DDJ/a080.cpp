@@ -42,8 +42,8 @@ bool chk(int x, int mx_dline){
 }
 signed main() 
 { 
-//	freopen("in.txt", "r", stdin);
-//	freopen("ans.txt", "w", stdout);
+	freopen("in.txt", "r", stdin);
+	freopen("ans.txt", "w", stdout);
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
 	while(cin >> n){

@@ -6,6 +6,7 @@ using namespace std;
 #define S second
 #define lowbit(x) (x&-x)
 #define MP(x, y) make_pair(x, y)
+int tmp[100];
 signed main() 
 { 
 //	freopen("in.txt", "r", stdin);
@@ -13,14 +14,18 @@ signed main()
 	ios::sync_with_stdio(0);
 	cin.tie(0); cout.tie(0);
 	srand(clock());
-	int q = 100;
+	int q = 10;
 	while(q--){
-		int t = 100;
+		int t = 10;
 		cout << t << "\n";
 		for (int i = 0; i < t; i++){
-			int l = rand()%(1001);
-			int r = rand()%(10+1)+l;
-			cout << l << " " << r << "\n";
+			tmp[i] = rand()%(10-1+1)+1;
+			cout << tmp[i] << " \n"[i==t-1];
+		}
+		srand(clock());
+		for (int i = 0; i < t; i++){
+			int a = rand()%(11)+tmp[i];
+			cout << a << " \n"[i==t-1];
 		}
 	}
 }
