@@ -7,7 +7,6 @@ using namespace std;
 #define lowbit(x) (x&-x)
 #define MP(x, y) make_pair(x, y)
 #define PII pair<int, int>
-const int N = 1e5+5;
 int pre[55][55];
 int dp[55][2510];
 signed main() 
@@ -32,21 +31,15 @@ signed main()
 		for (int i = 1; i <= n; i++){
 			for (int j = 1; j <= c; j++){
 				dp[i][j] = dp[i-1][j];
-				if (j <= m){
+				if (j <= m)
 					dp[i][j] = max(dp[i][j], pre[i][j]);
-					if (c <= m){
-						for (int k = 1; k <= j; k++){
-							dp[i][j] = max(dp[i][j], dp[i-1][j-k]+pre[i][k]);
-						}
-					}
-				}else{
-					for (int k = 1; k <= m; k++){
-						dp[i][j] = max({dp[i][j], dp[i-1][j-k]+pre[i][k]});
-					}
+				for (int k = 1; k <= min(j, m); k++){
+					dp[i][j] = max(dp[i][j], dp[i-1][j-k]+pre[i][k]);
 				}
-				cout << dp[i][j] << " ";
+				
+			//	cout << dp[i][j] << " ";
 			}
-			cout << "\n";
+	//		cout << "\n";
 		}
 		cout << dp[n][c] << "\n";
 	}
