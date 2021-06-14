@@ -64,9 +64,9 @@ signed main()
 			cin >> tmp;
 			mx = max(mx, tmp);
 		}
-	/*	for (auto i : stk) cout << i.X << " " << i.Y << "\n";
+		for (auto i : stk) cout << i.X << " " << i.Y << "\n";
 		cout << "@\n";
-		cout << cnt() << "\n";*/
+//		cout << cnt() << "\n";
 		if (cnt() > mx) cout << "nice\n";
 		else cout << "sleep\n";
 	}
