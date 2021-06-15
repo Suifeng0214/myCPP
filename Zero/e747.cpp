@@ -89,10 +89,10 @@ signed main()
 		int ans = 0;
 		if (stk.size() == 4){
 			ans = area2(stk[0], stk[1], stk[2]);
-			int mn;
+			int mn=1e8;
 			for (auto i : pt){
 				if (i == stk[0] || i == stk[1] || i == stk[2]) continue;
-				mn = min({area2(i, stk[1], stk[2]), area2(i, stk[2], stk[0]), area2(i, stk[0], stk[1])});
+				mn = min({mn, area2(i, stk[1], stk[2]), area2(i, stk[2], stk[0]), area2(i, stk[0], stk[1])});
 			}
 			ans -= mn;
 		}else if (stk.size() > 4){
