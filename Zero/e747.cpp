@@ -2,6 +2,10 @@
 //
 #include <bits/stdc++.h>
 using namespace std;
+#pragma GCC optimize(3)
+#pragma GCC optimize("Ofast")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+#pragma comment(linker, "/stack:200000000")
 #define int long long
 #define X first
 #define Y second
@@ -11,6 +15,10 @@ using namespace std;
 #define PDD pair<double, double>
 #define mid ((l+r)/2)
 //const int N = ;
+int n;
+int nxt(int x){
+	return ((x+1==n)? 0 : x+1);
+}
 vector < PII > pt, stk;
 int cross(PII a, PII b, PII c){ //ok
 	PII A = MP(b.X-a.X, b.Y-a.Y), B = MP(c.X-a.X, c.Y-a.Y);
@@ -41,30 +49,7 @@ void convex_hull(){ //ok
 
 int area(int a, int b, int c){
 	auto A = stk[a], B = stk[b], C = stk[c];
-	vector < PII > tmp;
-	tmp.emplace_back(A);
-	tmp.emplace_back(B);
-	tmp.emplace_back(C);
-	tmp.emplace_back(A);
-	int res = 0;
-	for (int i = 0; i < 3; i++){
-		res += tmp[i].X * tmp[i+1].Y;
-		res -= tmp[i].Y * tmp[i+1].X;
-	}
-	return abs(res);
-}
-int area2(PII A, PII B, PII C){
-	vector < PII > tmp;
-	tmp.emplace_back(A);
-	tmp.emplace_back(B);
-	tmp.emplace_back(C);
-	tmp.emplace_back(A);
-	int res = 0;
-	for (int i = 0; i < 3; i++){
-		res += tmp[i].X * tmp[i+1].Y;
-		res -= tmp[i].Y * tmp[i+1].X;
-	}
-	return abs(res);
+	return abs(cross(A, B, C));
 }
 signed main() 
 { 
@@ -77,7 +62,6 @@ signed main()
 	while(q--){
 		pt.clear();
 		stk.clear();
-		int n;
 		cin >> n;
 		int x, y;
 		for (int i = 0; i < n; i++){
@@ -88,23 +72,37 @@ signed main()
 		n = stk.size(); 
 		int ans = 0;
 		if (stk.size() == 4){
-			ans = area2(stk[0], stk[1], stk[2]);
+			ans = abs(cross(stk[0], stk[1], stk[2]));
 			int mn=1e8;
-			for (auto i : pt){
-				if (i == stk[0] || i == stk[1] || i == stk[2]) continue;
-				mn = min({mn, area2(i, stk[1], stk[2]), area2(i, stk[2], stk[0]), area2(i, stk[0], stk[1])});
+			bool re=0;
+			for (int i = 0; i < pt.size()-1; i++){
+				if (pt[i] == pt[i+1] && 
+					(pt[i] == stk[0] || 
+					 pt[i] == stk[1] || 
+					 pt[i] == stk[2])){
+					re = 1;
+					break;
+				}
 			}
-			ans -= mn;
+			if (!re){
+				for (auto i : pt){
+					if (i == stk[0] || i == stk[1] || i == stk[2]) continue;
+					mn = min({mn, abs(cross(i, stk[1], stk[2])), 
+								  abs(cross(i, stk[2], stk[0])),
+								  abs(cross(i, stk[0], stk[1]))});
+				}
+				ans -= mn;
+			}
 		}else if (stk.size() > 4){
 			for (int i = 0; i < n; i++){
-				int k1 = (i+1)%n, k2 = (i+3)%n;
-				for (int j = (i+2)%n; (j+1)%n != i; j=(j+1)%n){
-					if (j==k2) k2 = (k2+1)%n;
-					while((k1+1)%n != j && area(i, k1, j) < area(i, (k1+1)%n, j)){
-						k1 = (k1+1)%n;
+				int k1 = nxt(i), k2 = nxt(nxt(nxt(i)));
+				for (int j = nxt(nxt(i)); nxt(j) != i; j=nxt(j)){
+					if (j==k2) k2 = nxt(k2);
+					while(nxt(k1) != j && area(i, k1, j) < area(i, nxt(k1), j)){
+						k1 = nxt(k1);
 					}
-					while((k2+1)%n != i && area(i, j, k2) < area(i, j, (k2+1)%n)){
-						k2 = (k2+1)%n;
+					while(nxt(k2) != i && area(i, j, k2) < area(i, j, nxt(k2))){
+						k2 = nxt(k2);
 					}
 					ans = max(area(i, k1, j) + area(i, j, k2), ans);
 				}
