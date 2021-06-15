@@ -39,19 +39,32 @@ void convex_hull(){ //ok
 //	cout << "@\n";
 }
 
-double area(int a, int b, int c){
+int area(int a, int b, int c){
 	auto A = stk[a], B = stk[b], C = stk[c];
 	vector < PII > tmp;
 	tmp.emplace_back(A);
 	tmp.emplace_back(B);
 	tmp.emplace_back(C);
 	tmp.emplace_back(A);
-	double res = 0;
+	int res = 0;
 	for (int i = 0; i < 3; i++){
 		res += tmp[i].X * tmp[i+1].Y;
 		res -= tmp[i].Y * tmp[i+1].X;
 	}
-	return res/2;
+	return abs(res);
+}
+int area2(PII A, PII B, PII C){
+	vector < PII > tmp;
+	tmp.emplace_back(A);
+	tmp.emplace_back(B);
+	tmp.emplace_back(C);
+	tmp.emplace_back(A);
+	int res = 0;
+	for (int i = 0; i < 3; i++){
+		res += tmp[i].X * tmp[i+1].Y;
+		res -= tmp[i].Y * tmp[i+1].X;
+	}
+	return abs(res);
 }
 signed main() 
 { 
@@ -73,23 +86,30 @@ signed main()
 		}
 		convex_hull();
 		n = stk.size(); 
-		if (stk.size() <= 3) {
-			cout << "ouo";
-			return 0;
-		}
-		double ans = 0;
-		for (int i = 0; i < n-2; i++){
-			int k1 = i+1, k2 = (i+n-1)%n;
-			for (int j = (i+2)%n; j < n-1; j++){
-				while(k1 < j && area(i, k1, j) < area(i, (k1+1)%n, j)){
-					k1 = (k1+1)%n;
+		int ans = 0;
+		if (stk.size() == 4){
+			ans = area2(stk[0], stk[1], stk[2]);
+			int mn;
+			for (auto i : pt){
+				if (i == stk[0] || i == stk[1] || i == stk[2]) continue;
+				mn = min({area2(i, stk[1], stk[2]), area2(i, stk[2], stk[0]), area2(i, stk[0], stk[1])});
+			}
+			ans -= mn;
+		}else if (stk.size() > 4){
+			for (int i = 0; i < n; i++){
+				int k1 = (i+1)%n, k2 = (i+3)%n;
+				for (int j = (i+2)%n; (j+1)%n != i; j=(j+1)%n){
+					if (j==k2) k2 = (k2+1)%n;
+					while((k1+1)%n != j && area(i, k1, j) < area(i, (k1+1)%n, j)){
+						k1 = (k1+1)%n;
+					}
+					while((k2+1)%n != i && area(i, j, k2) < area(i, j, (k2+1)%n)){
+						k2 = (k2+1)%n;
+					}
+					ans = max(area(i, k1, j) + area(i, j, k2), ans);
 				}
-				while(k2 > j && area(i, j, k2) < area(i, j, (k2-1+n)%n)){
-					k2 = (k2-1+n)%n;
-				}
-				ans = max(area(i, k1, j) + area(i, j, k2), ans);
 			}
 		}
-		cout << ans << "\n";
+		cout << ans/2 << ((ans&1)? ".5\n" : "\n");
 	}
 }
