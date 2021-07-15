@@ -110,6 +110,18 @@ signed main(){
 					}
 				}
 			}
+			for (int i = 0; i < 4; i++){
+				int nx = x + dx[i],
+					ny = y + dy[i];
+				string tmp = 
+					to_string(z) + " " + to_string(nx) + " " + to_string(ny);
+				if (mp[z][nx][ny] == 1 && used2[tmp] == 0){
+					N.EB(z);
+					R.EB(nx);
+					C.EB(ny);
+					used2[tmp] = 1;
+				}
+			}
 	}
 	cout << ans << "\n";
 }
